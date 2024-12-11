@@ -1,0 +1,162 @@
+id: 06_gcp_taxi
+namespace: zoomcamp
+description: |
+  Year 2019 and 2020 are provided in full. 
+  Data: https://github.com/DataTalksClub/nyc-tlc-data/releases
+
+inputs:
+  - id: taxi
+    type: SELECT
+    displayName: Select taxi type
+    values: [yellow, green]
+    defaults: green
+
+  - id: year
+    type: SELECT
+    displayName: Select year
+    values: ["2019", "2020"]
+    defaults: "2019"
+
+  - id: month
+    type: SELECT
+    displayName: Select month
+    values: ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"]
+    defaults: "01"
+
+variables:
+  file: "{{inputs.taxi}}_tripdata_{{inputs.year}}-{{inputs.month}}.csv"
+  table: "zoomcamp.{{inputs.taxi}}_tripdata_{{inputs.year}}_{{inputs.month}}"
+  data: "{{ outputs.extract.outputFiles[inputs.taxi ~ '_tripdata_' ~ inputs.year ~ '-' ~ inputs.month ~ '.csv'] }}"
+
+tasks:
+  - id: set_label
+    type: io.kestra.plugin.core.execution.Labels
+    labels:
+      file: "{{render(vars.file)}}"
+  - id: extract
+    type: io.kestra.plugin.scripts.shell.Commands
+    outputFiles:
+      - "*.csv"
+    taskRunner:
+      type: io.kestra.plugin.core.runner.Process
+    commands:
+      - wget -qO- https://github.com/DataTalksClub/nyc-tlc-data/releases/download/{{inputs.taxi}}/{{render(vars.file)}}.gz | gunzip > {{render(vars.file)}}
+
+  - id: upload_to_gcs
+    type: io.kestra.plugin.gcp.gcs.Upload
+    from: "{{render(vars.data)}}"
+    to: "gs://{{kv('GCP_BUCKET_NAME')}}/{{render(vars.file)}}"
+
+  - id: ingest_to_bq_green
+    runIf: "{{ inputs.taxi == 'green' }}"
+    type: io.kestra.plugin.gcp.bigquery.LoadFromGcs
+    writeDisposition: WRITE_TRUNCATE
+    destinationTable: "{{ render(vars.table)}}"
+    autodetect: true
+    format: CSV
+    csvOptions:
+      allowJaggedRows: true
+      skipLeadingRows: 1
+    from:
+      - "gs://{{kv('GCP_BUCKET_NAME')}}/{{render(vars.file)}}"
+    schema:
+      fields:
+        - name: VendorID
+          type: NUMERIC
+        - name: lpep_pickup_datetime
+          type: TIMESTAMP
+        - name: lpep_dropoff_datetime
+          type: TIMESTAMP
+        - name: store_and_fwd_flag
+          type: BOOL
+        - name: RatecodeID
+          type: NUMERIC
+        - name: PULocationID
+          type: NUMERIC
+        - name: DOLocationID
+          type: NUMERIC
+        - name: passenger_count
+          type: NUMERIC
+        - name: trip_distance
+          type: FLOAT64
+        - name: fare_amount
+          type: FLOAT64
+        - name: extra
+          type: FLOAT64
+        - name: mta_tax
+          type: FLOAT64
+        - name: tip_amount
+          type: FLOAT64
+        - name: tolls_amount
+          type: FLOAT64
+        - name: ehail_fee
+          type: STRING
+        - name: improvement_surcharge
+          type: FLOAT64
+        - name: total_amount
+          type: FLOAT64
+        - name: payment_type
+          type: STRING
+        - name: trip_type
+          type: STRING
+        - name: congestion_surcharge
+          type: FLOAT64
+
+  - id: ingest_to_bq_yellow
+    runIf: "{{ inputs.taxi == 'yellow' }}"
+    type: io.kestra.plugin.gcp.bigquery.LoadFromGcs
+    writeDisposition: WRITE_TRUNCATE
+    destinationTable: "{{ render(vars.table)}}"
+    autodetect: true
+    format: CSV
+    csvOptions:
+      allowJaggedRows: true
+      skipLeadingRows: 1
+    from:
+      - "gs://{{kv('GCP_BUCKET_NAME')}}/{{render(vars.file)}}"
+    schema:
+      fields:
+        - name: VendorID
+          type: NUMERIC
+        - name: tpep_pickup_datetime
+          type: TIMESTAMP
+        - name: tpep_dropoff_datetime
+          type: TIMESTAMP
+        - name: passenger_count
+          type: NUMERIC
+        - name: trip_distance
+          type: FLOAT64
+        - name: RatecodeID
+          type: NUMERIC
+        - name: store_and_fwd_flag
+          type: BOOL
+        - name: PULocationID
+          type: NUMERIC
+        - name: DOLocationID
+          type: NUMERIC
+        - name: payment_type
+          type: STRING
+        - name: fare_amount
+          type: FLOAT64
+        - name: extra
+          type: FLOAT64
+        - name: mta_tax
+          type: FLOAT64
+        - name: tip_amount
+          type: FLOAT64
+        - name: tolls_amount
+          type: FLOAT64
+        - name: improvement_surcharge
+          type: FLOAT64
+        - name: total_amount
+          type: FLOAT64
+        - name: congestion_surcharge
+          type: FLOAT64
+
+pluginDefaults:
+  - type: io.kestra.plugin.gcp
+    values:
+      serviceAccount: "{{ kv('GCP_CREDS') }}"
+      projectId: "{{ kv('GCP_PROJECT_ID') }}"
+      location: "{{ kv('GCP_LOCATION') }}"
+      bucket: "{{ kv('GCP_BUCKET_NAME') }}"

@@ -1,0 +1,109 @@
+id: 03_postgres_taxi_backfill
+namespace: zoomcamp
+description: |
+  Year 2019 and 2020 are provided in full. 
+  Best to add a label backfill true from the UI to track executions created via a backfill.
+  Data: https://github.com/DataTalksClub/nyc-tlc-data/releases
+
+inputs:
+  - id: taxi
+    type: SELECT
+    displayName: Select taxi type
+    values: [yellow, green]
+    defaults: green
+
+variables:
+  file: "{{inputs.taxi}}_tripdata_{{trigger.date | date('yyyy-MM')}}.csv"
+  table: "public.{{inputs.taxi}}_tripdata_{{trigger.date | date('yyyy_MM')}}"
+  data: "{{ outputs.extract.outputFiles[inputs.taxi ~ '_tripdata_' ~ (trigger.date | date('yyyy-MM')) ~ '.csv'] }}"
+
+tasks:
+  - id: set_label
+    type: io.kestra.plugin.core.execution.Labels
+    labels:
+      file: "{{render(vars.file)}}"
+  - id: extract
+    type: io.kestra.plugin.scripts.shell.Commands
+    outputFiles:
+      - "*.csv"
+    taskRunner:
+      type: io.kestra.plugin.core.runner.Process
+    commands:
+      - wget -qO- https://github.com/DataTalksClub/nyc-tlc-data/releases/download/{{inputs.taxi}}/{{render(vars.file)}}.gz | gunzip > {{render(vars.file)}}
+
+  - id: create_yellow_table
+    runIf: "{{inputs.taxi == 'yellow'}}"
+    type: io.kestra.plugin.jdbc.postgresql.Queries
+    sql: |
+      drop table if exists {{render(vars.table)}};
+      create table {{render(vars.table)}}
+      (
+          vendorid              text,
+          tpep_pickup_datetime  timestamp,
+          tpep_dropoff_datetime timestamp,
+          passenger_count       integer,
+          trip_distance         double precision,
+          ratecodeid            text,
+          store_and_fwd_flag     text,
+          pulocationid          text,
+          dolocationid          text,
+          payment_type          integer,
+          fare_amount           double precision,
+          extra                 double precision,
+          mta_tax               double precision,
+          tip_amount            double precision,
+          tolls_amount          double precision,
+          improvement_surcharge double precision,
+          total_amount          double precision,
+          congestion_surcharge  double precision
+      );
+
+  - id: create_green_table
+    runIf: "{{inputs.taxi == 'green'}}"
+    type: io.kestra.plugin.jdbc.postgresql.Queries
+    sql: |
+      drop table if exists {{render(vars.table)}};
+      create table {{render(vars.table)}}
+      (
+          vendorid              text,
+          lpep_pickup_datetime  timestamp,
+          lpep_dropoff_datetime timestamp,
+          store_and_fwd_flag     text,
+          ratecodeid            text,
+          pulocationid          text,
+          dolocationid          text,
+          passenger_count       integer,
+          trip_distance         double precision,
+          fare_amount           double precision,
+          extra                 double precision,
+          mta_tax               double precision,
+          tip_amount            double precision,
+          tolls_amount          double precision,
+          ehail_fee             double precision,
+          improvement_surcharge double precision,
+          total_amount          double precision,
+          payment_type          integer,
+          trip_type             integer,
+          congestion_surcharge  double precision
+      );
+
+  - id: copy_in
+    type: io.kestra.plugin.jdbc.postgresql.CopyIn
+    format: CSV
+    from: "{{render(vars.data)}}"
+    table: "{{render(vars.table)}}"
+    header: true
+
+pluginDefaults:
+  - type: io.kestra.plugin.jdbc.postgresql
+    values:
+      url: jdbc:postgresql://host.docker.internal:5433/kestra
+      username: kestra
+      password: k3str4
+
+triggers:
+  - id: schedule
+    type: io.kestra.plugin.core.trigger.Schedule
+    cron: "0 9 1 * *"
+    inputs:
+      taxi: green
