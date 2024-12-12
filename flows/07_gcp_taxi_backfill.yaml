@@ -12,15 +12,15 @@ inputs:
     defaults: green
 
 variables:
-  file: "{{inputs.taxi}}_tripdata_{{trigger.date | date('yyyy-MM')}}.csv"
-  table: "zoomcamp.{{inputs.taxi}}_tripdata_{{trigger.date | date('yyyy_MM')}}"
+  file: "{{ inputs.taxi }}_tripdata_{{ trigger.date | date('yyyy-MM') }}.csv"
+  table: "zoomcamp.{{ inputs.taxi }}_tripdata_{{ trigger.date | date('yyyy_MM') }}"
   data: "{{ outputs.extract.outputFiles[inputs.taxi ~ '_tripdata_' ~ (trigger.date | date('yyyy-MM')) ~ '.csv'] }}"
 
 tasks:
   - id: set_label
     type: io.kestra.plugin.core.execution.Labels
     labels:
-      file: "{{render(vars.file)}}"
+      file: "{{ render(vars.file) }}"
   - id: extract
     type: io.kestra.plugin.scripts.shell.Commands
     outputFiles:
@@ -28,25 +28,25 @@ tasks:
     taskRunner:
       type: io.kestra.plugin.core.runner.Process
     commands:
-      - wget -qO- https://github.com/DataTalksClub/nyc-tlc-data/releases/download/{{inputs.taxi}}/{{render(vars.file)}}.gz | gunzip > {{render(vars.file)}}
+      - wget -qO- https://github.com/DataTalksClub/nyc-tlc-data/releases/download/{{ inputs.taxi }}/{{ render(vars.file) }}.gz | gunzip > {{ render(vars.file) }}
 
   - id: upload_to_gcs
     type: io.kestra.plugin.gcp.gcs.Upload
-    from: "{{render(vars.data)}}"
-    to: "gs://{{kv('GCP_BUCKET_NAME')}}/{{render(vars.file)}}"
+    from: "{{ render(vars.data) }}"
+    to: "gs://{{ kv('GCP_BUCKET_NAME') }}/{{ render(vars.file) }}"
 
   - id: ingest_to_bq_green
     runIf: "{{ inputs.taxi == 'green' }}"
     type: io.kestra.plugin.gcp.bigquery.LoadFromGcs
     writeDisposition: WRITE_TRUNCATE
-    destinationTable: "{{ render(vars.table)}}"
+    destinationTable: "{{ render(vars.table) }}"
     autodetect: true
     format: CSV
     csvOptions:
       allowJaggedRows: true
       skipLeadingRows: 1
     from:
-      - "gs://{{kv('GCP_BUCKET_NAME')}}/{{render(vars.file)}}"
+      - "gs://{{ kv('GCP_BUCKET_NAME') }}/{{ render(vars.file) }}"
     schema:
       fields:
         - name: VendorID
@@ -94,14 +94,14 @@ tasks:
     runIf: "{{ inputs.taxi == 'yellow' }}"
     type: io.kestra.plugin.gcp.bigquery.LoadFromGcs
     writeDisposition: WRITE_TRUNCATE
-    destinationTable: "{{ render(vars.table)}}"
+    destinationTable: "{{ render(vars.table) }}"
     autodetect: true
     format: CSV
     csvOptions:
       allowJaggedRows: true
       skipLeadingRows: 1
     from:
-      - "gs://{{kv('GCP_BUCKET_NAME')}}/{{render(vars.file)}}"
+      - "gs://{{ kv('GCP_BUCKET_NAME') }}/{{ render(vars.file) }}"
     schema:
       fields:
         - name: VendorID

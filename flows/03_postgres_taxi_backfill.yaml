@@ -13,15 +13,15 @@ inputs:
     defaults: green
 
 variables:
-  file: "{{inputs.taxi}}_tripdata_{{trigger.date | date('yyyy-MM')}}.csv"
-  table: "public.{{inputs.taxi}}_tripdata_{{trigger.date | date('yyyy_MM')}}"
+  file: "{{ inputs.taxi }}_tripdata_{{ trigger.date | date('yyyy-MM') }}.csv"
+  table: "public.{{ inputs.taxi }}_tripdata_{{ trigger.date | date('yyyy_MM') }}"
   data: "{{ outputs.extract.outputFiles[inputs.taxi ~ '_tripdata_' ~ (trigger.date | date('yyyy-MM')) ~ '.csv'] }}"
 
 tasks:
   - id: set_label
     type: io.kestra.plugin.core.execution.Labels
     labels:
-      file: "{{render(vars.file)}}"
+      file: "{{ render(vars.file) }}"
   - id: extract
     type: io.kestra.plugin.scripts.shell.Commands
     outputFiles:
@@ -29,14 +29,14 @@ tasks:
     taskRunner:
       type: io.kestra.plugin.core.runner.Process
     commands:
-      - wget -qO- https://github.com/DataTalksClub/nyc-tlc-data/releases/download/{{inputs.taxi}}/{{render(vars.file)}}.gz | gunzip > {{render(vars.file)}}
+      - wget -qO- https://github.com/DataTalksClub/nyc-tlc-data/releases/download/{{ inputs.taxi }}/{{ render(vars.file) }}.gz | gunzip > {{ render(vars.file) }}
 
   - id: create_yellow_table
-    runIf: "{{inputs.taxi == 'yellow'}}"
+    runIf: "{{ inputs.taxi == 'yellow' }}"
     type: io.kestra.plugin.jdbc.postgresql.Queries
     sql: |
-      drop table if exists {{render(vars.table)}};
-      create table {{render(vars.table)}}
+      drop table if exists {{ render(vars.table) }};
+      create table {{ render(vars.table) }}
       (
           vendorid              text,
           tpep_pickup_datetime  timestamp,
@@ -59,11 +59,11 @@ tasks:
       );
 
   - id: create_green_table
-    runIf: "{{inputs.taxi == 'green'}}"
+    runIf: "{{ inputs.taxi == 'green' }}"
     type: io.kestra.plugin.jdbc.postgresql.Queries
     sql: |
-      drop table if exists {{render(vars.table)}};
-      create table {{render(vars.table)}}
+      drop table if exists {{ render(vars.table) }};
+      create table {{ render(vars.table) }}
       (
           vendorid              text,
           lpep_pickup_datetime  timestamp,
@@ -90,8 +90,8 @@ tasks:
   - id: copy_in
     type: io.kestra.plugin.jdbc.postgresql.CopyIn
     format: CSV
-    from: "{{render(vars.data)}}"
-    table: "{{render(vars.table)}}"
+    from: "{{ render(vars.data) }}"
+    table: "{{ render(vars.table) }}"
     header: true
 
 pluginDefaults:
