@@ -1,10 +1,10 @@
 # Week 2: Workflow Orchestration
 
-Welcome to Week 2 of the Data Engineering Zoomcamp! This week, we'll cover workflow orchestration with [Kestra](https://github.com/kestra-io/kestra).
+Welcome to Week 2 of the Data Engineering Zoomcamp! This week, we'll cover workflow orchestration with [Kestra](https://go.kestra.io/de-zoomcamp/github).
 
 ![zoomcamp.jpeg](02-workflow-orchestration/zoomcamp.jpeg)
 
-Kestra is an open-source, event-driven orchestration platform that makes both scheduled and event-driven workflows easy. By bringing Infrastructure as Code best practices to data, process, and microservice orchestration, you can build reliable workflows [directly from the UI](https://kestra.io/docs/getting-started/quickstart) in just a few lines of YAML.
+Kestra is an open-source, event-driven orchestration platform that makes both scheduled and event-driven workflows easy. By bringing Infrastructure as Code best practices to data, process, and microservice orchestration, you can build reliable workflows [directly from the UI](https://go.kestra.io/de-zoomcamp/quickstart) in just a few lines of YAML.
 
 The course will cover the basics of workflow orchestration, why it's important, and how it can be used to build data engineering pipelines. 
 
@@ -58,15 +58,16 @@ We'll demonstrate backfills first locally using Postgres and then on GCP using G
 
 ## Homework 
 
-The homework for this week can be found [here](homework.md). Don't worry, it's just a bunch of Multiple Choice Questions to test your understanding of Kestra, Workflow Orchestration, and ETL pipelines for a data lake and data warehouse.
+The homework for this week can be found [here](./02-workflow-orchestration/homework.md). Don't worry, it's just a bunch of Multiple Choice Questions to test your understanding of Kestra, Workflow Orchestration, and ETL pipelines for a data lake and data warehouse.
 
 ## Additional Resources
 
-- Check [Kestra Docs](https://kestra.io/docs/)
-- Explore our [Blueprints](https://kestra.io/blueprints) library
-- Browse over 600 [plugins](https://kestra.io/plugins) available in Kestra
-- Give us a star on [GitHub](https://github.com/kestra-io/kestra)
-- Join our [Slack community](https://kestra.io/slack) if you have any questions.
+- Check [Kestra Docs](https://go.kestra.io/de-zoomcamp/docs)
+- Explore our [Blueprints](https://go.kestra.io/de-zoomcamp/blueprints) library
+- Browse over 600 [plugins](https://go.kestra.io/de-zoomcamp/plugins) available in Kestra
+- Give us a star on [GitHub](https://go.kestra.io/de-zoomcamp/github)
+- Join our [Slack community](https://go.kestra.io/de-zoomcamp/slack) if you have any questions.
+- Find all the videos in this [YouTube Playlist](https://go.kestra.io/de-zoomcamp/yt-playlist).
 
 ## Community notes
 
