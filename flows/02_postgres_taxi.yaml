@@ -33,6 +33,7 @@ tasks:
     type: io.kestra.plugin.core.execution.Labels
     labels:
       file: "{{render(vars.file)}}"
+
   - id: extract
     type: io.kestra.plugin.scripts.shell.Commands
     outputFiles:
