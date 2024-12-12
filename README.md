@@ -66,8 +66,8 @@ The homework for this week can be found [here](./02-workflow-orchestration/homew
 - Explore our [Blueprints](https://go.kestra.io/de-zoomcamp/blueprints) library
 - Browse over 600 [plugins](https://go.kestra.io/de-zoomcamp/plugins) available in Kestra
 - Give us a star on [GitHub](https://go.kestra.io/de-zoomcamp/github)
-- Join our [Slack community](https://go.kestra.io/de-zoomcamp/slack) if you have any questions.
-- Find all the videos in this [YouTube Playlist](https://go.kestra.io/de-zoomcamp/yt-playlist).
+- Join our [Slack community](https://go.kestra.io/de-zoomcamp/slack) if you have any questions
+- Find all the videos in this [YouTube Playlist](https://go.kestra.io/de-zoomcamp/yt-playlist)
 
 ## Community notes
 
