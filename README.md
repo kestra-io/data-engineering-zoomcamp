@@ -42,11 +42,12 @@ Resources
 
 In this section, we'll cover how you can ingest the Yellow Taxi data from the NYC Taxi and Limousine Commission (TLC) and load it into a Postgres database. We'll cover how to extract data from [CSV files](https://github.com/DataTalksClub/nyc-tlc-data/releases), and load them into a local Postgres database running in a Docker container.
 
-> Important note: the TLC Trip Record Data provided on the [nyc.gov](https://www.nyc.gov/site/tlc/about/tlc-trip-record-data.page) website is currently available only in a Parquet format, but this is NOT the dataset we're going to use in this course. For the purpose of this course, we'll use the **CSV files** available [here on GitHub](https://github.com/DataTalksClub/nyc-tlc-data/releases). This is because the Parquet format can be challenging to understand by newcomers, and we want to make the course as accessible as possible — the CSV format can be easily introspected using tools like Excel or Google Sheets, or even a simple text editor.
+> [!NOTE]  
+> The TLC Trip Record Data provided on the [nyc.gov](https://www.nyc.gov/site/tlc/about/tlc-trip-record-data.page) website is currently available only in a Parquet format, but this is NOT the dataset we're going to use in this course. For the purpose of this course, we'll use the **CSV files** available [here on GitHub](https://github.com/DataTalksClub/nyc-tlc-data/releases). This is because the Parquet format can be challenging to understand by newcomers, and we want to make the course as accessible as possible — the CSV format can be easily introspected using tools like Excel or Google Sheets, or even a simple text editor.
 
 ## ETL: Extract data and load it to Google Cloud
 
-Now that you explored how to run ETL locally using Postgres, we'll now do the same on GCP. We'll load the same data to:
+So foar, you've explored how to run ETL locally using Postgres, we'll do the same on GCP. We'll load the same data to:
 1. Data lake using Google Cloud Storage (GCS) 
 2. Data Warehouse using BigQuery.
 
@@ -73,8 +74,13 @@ The homework for this week can be found [here](./02-workflow-orchestration/homew
 
 If you encounter similar errors to:
 
-```json
-[ - BigQueryError{reason=invalid, location=null, message=Error while reading table: kestra-sandbox.zooomcamp.yellow_tripdata_2020_01, error message: CSV table references column position 17, but line contains only 14 columns.; line_number: 2103925 byte_offset_to_start_of_line: 194863028 column_index: 17 column_name: "congestion_surcharge" column_type: NUMERIC File: gs://anna-geller/yellow_tripdata_2020-01.csv} ]
+```
+BigQueryError{reason=invalid, location=null, 
+message=Error while reading table: kestra-sandbox.zooomcamp.yellow_tripdata_2020_01, 
+error message: CSV table references column position 17, but line contains only 14 columns.; 
+line_number: 2103925 byte_offset_to_start_of_line: 194863028 
+column_index: 17 column_name: "congestion_surcharge" column_type: NUMERIC 
+File: gs://anna-geller/yellow_tripdata_2020-01.csv}
 ```
 
 It means that the CSV file you're trying to load into BigQuery has a mismatch in the number of columns between the external source table (i.e. file in GCS) and the destination table in BigQuery. This can happen when for due to network/transfer issues, the file is not fully downloaded from GitHub or not correctly uploaded to GCS. The error suggests schema issues but that's not the case. Simply rerun the entire execution including redownloading the CSV file and reuploading it to GCS. This should resolve the issue.
