@@ -69,6 +69,16 @@ The homework for this week can be found [here](./02-workflow-orchestration/homew
 - Join our [Slack community](https://go.kestra.io/de-zoomcamp/slack) if you have any questions
 - Find all the videos in this [YouTube Playlist](https://go.kestra.io/de-zoomcamp/yt-playlist)
 
+## Troubleshooting tips
+
+If you encounter similar errors to:
+
+```json
+[ - BigQueryError{reason=invalid, location=null, message=Error while reading table: kestra-sandbox.zooomcamp.yellow_tripdata_2020_01, error message: CSV table references column position 17, but line contains only 14 columns.; line_number: 2103925 byte_offset_to_start_of_line: 194863028 column_index: 17 column_name: "congestion_surcharge" column_type: NUMERIC File: gs://anna-geller/yellow_tripdata_2020-01.csv} ]
+```
+
+It means that the CSV file you're trying to load into BigQuery has a mismatch in the number of columns between the external source table (i.e. file in GCS) and the destination table in BigQuery. This can happen when for due to network/transfer issues, the file is not fully downloaded from GitHub or not correctly uploaded to GCS. The error suggests schema issues but that's not the case. Simply rerun the entire execution including redownloading the CSV file and reuploading it to GCS. This should resolve the issue.
+
 ## Community notes
 
 Did you take notes? You can share them here. Just create a PR to this file and add your notes below.
