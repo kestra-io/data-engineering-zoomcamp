@@ -1,15 +1,14 @@
 id: 02_postgres_taxi
 namespace: zoomcamp
 description: |
-  Year 2019 and 2020 are provided in full. 
-  Data: https://github.com/DataTalksClub/nyc-tlc-data/releases
+  The CSV Data used in the course: https://github.com/DataTalksClub/nyc-tlc-data/releases
 
 inputs:
   - id: taxi
     type: SELECT
     displayName: Select taxi type
     values: [yellow, green]
-    defaults: green
+    defaults: yellow
 
   - id: year
     type: SELECT
@@ -26,7 +25,7 @@ inputs:
 variables:
   file: "{{inputs.taxi}}_tripdata_{{inputs.year}}-{{inputs.month}}.csv"
   table: "public.{{inputs.taxi}}_tripdata_{{inputs.year}}_{{inputs.month}}"
-  data: "{{ outputs.extract.outputFiles[inputs.taxi ~ '_tripdata_' ~ inputs.year ~ '-' ~ inputs.month ~ '.csv'] }}"
+  data: "{{outputs.extract.outputFiles[inputs.taxi ~ '_tripdata_' ~ inputs.year ~ '-' ~ inputs.month ~ '.csv']}}"
 
 tasks:
   - id: set_label
@@ -47,8 +46,8 @@ tasks:
     runIf: "{{inputs.taxi == 'yellow'}}"
     type: io.kestra.plugin.jdbc.postgresql.Queries
     sql: |
-      drop table if exists {{render(vars.table)}};
-      create table {{render(vars.table)}}
+      DROP TABLE IF EXISTS {{render(vars.table)}};
+      CREATE TABLE {{render(vars.table)}}
       (
           vendorid              text,
           tpep_pickup_datetime  timestamp,
@@ -74,8 +73,8 @@ tasks:
     runIf: "{{inputs.taxi == 'green'}}"
     type: io.kestra.plugin.jdbc.postgresql.Queries
     sql: |
-      drop table if exists {{render(vars.table)}};
-      create table {{render(vars.table)}}
+      DROP TABLE IF EXISTS {{render(vars.table)}};
+      CREATE TABLE {{render(vars.table)}}
       (
           vendorid              text,
           lpep_pickup_datetime  timestamp,
