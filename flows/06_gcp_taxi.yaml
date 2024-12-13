@@ -15,6 +15,7 @@ inputs:
     displayName: Select year
     values: ["2019", "2020"]
     defaults: "2019"
+    allowCustomValue: true # allows you to type 2021 from the UI for the homework 🤗
 
   - id: month
     type: SELECT
