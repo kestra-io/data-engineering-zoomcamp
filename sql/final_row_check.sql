@@ -1,0 +1,2 @@
+SELECT filename, count(*) as nr_rows FROM `kestra-sandbox.zoomcamp.green_tripdata` GROUP BY filename ORDER BY filename;
+SELECT filename, count(*) as nr_rows FROM `kestra-sandbox.zoomcamp.yellow_tripdata` GROUP BY filename ORDER BY filename;
