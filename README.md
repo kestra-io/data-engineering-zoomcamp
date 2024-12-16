@@ -47,7 +47,7 @@ In this section, we'll cover how you can ingest the Yellow Taxi data from the NY
 
 ## ETL: Extract data and load it to Google Cloud
 
-So foar, you've explored how to run ETL locally using Postgres, we'll do the same on GCP. We'll load the same data to:
+So far, you've explored how to run ETL locally using Postgres, we'll do the same on GCP. We'll load the same data to:
 1. Data lake using Google Cloud Storage (GCS) 
 2. Data Warehouse using BigQuery.
 
