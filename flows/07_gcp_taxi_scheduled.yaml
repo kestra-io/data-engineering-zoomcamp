@@ -22,6 +22,7 @@ tasks:
     type: io.kestra.plugin.core.execution.Labels
     labels:
       file: "{{render(vars.file)}}"
+      taxi: "{{inputs.taxi}}"
 
   - id: extract
     type: io.kestra.plugin.scripts.shell.Commands
