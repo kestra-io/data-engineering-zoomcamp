@@ -153,13 +153,11 @@ tasks:
           congestion_surcharge   double precision
       );
 
-  ### Truncate Table Before CopyIn
   - id: truncate_table
     type: io.kestra.plugin.jdbc.postgresql.Queries
     sql: |
       TRUNCATE TABLE {{render(vars.table)}};
 
-  ### Copy Data into Monthly Table
   - id: green_copy_in
     runIf: "{{inputs.taxi == 'green'}}"
     type: io.kestra.plugin.jdbc.postgresql.CopyIn
@@ -178,7 +176,6 @@ tasks:
     header: true
     columns: [VendorID,tpep_pickup_datetime,tpep_dropoff_datetime,passenger_count,trip_distance,RatecodeID,store_and_fwd_flag,PULocationID,DOLocationID,payment_type,fare_amount,extra,mta_tax,tip_amount,tolls_amount,improvement_surcharge,total_amount,congestion_surcharge]
 
-  ### Transform Data - Add unique_row_id and filename
   - id: yellow_add_unique_id_and_filename
     runIf: "{{inputs.taxi == 'yellow'}}"
     type: io.kestra.plugin.jdbc.postgresql.Queries
@@ -221,7 +218,6 @@ tasks:
         ),
         filename = '{{render(vars.file)}}';
 
-  ### Merge Data into Final Table
   - id: yellow_merge_data
     runIf: "{{inputs.taxi == 'yellow'}}"
     type: io.kestra.plugin.jdbc.postgresql.Queries
