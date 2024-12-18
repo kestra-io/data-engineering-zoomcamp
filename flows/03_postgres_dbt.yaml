@@ -1,0 +1,58 @@
+id: dbt
+namespace: zoomcamp
+inputs:
+  - id: dbt_command
+    type: SELECT
+    allowCustomValue: true
+    defaults: dbt build
+    values:
+      - dbt build
+      - dbt debug
+tasks:
+  - id: sync
+    type: io.kestra.plugin.git.SyncNamespaceFiles
+    url: https://github.com/DataTalksClub/data-engineering-zoomcamp
+    branch: main
+    namespace: "{{ flow.namespace }}"
+    gitDirectory: 04-analytics-engineering/taxi_rides_ny
+    dryRun: false
+
+  - id: dbt-build
+    type: io.kestra.plugin.dbt.cli.DbtCLI
+    namespaceFiles:
+      enabled: true
+    containerImage: ghcr.io/kestra-io/dbt-postgres:latest
+    taskRunner:
+      type: io.kestra.plugin.scripts.runner.docker.Docker
+    commands:
+      - dbt deps
+      - "{{ inputs.dbt_command }}"
+    storeManifest:
+      key: manifest.json
+      namespace: "{{ flow.namespace }}"
+    profiles: |
+      default:
+        outputs:
+          dev:
+            type: postgres
+            host: host.docker.internal
+            user: kestra
+            password: k3str4
+            port: 5432
+            dbname: kestra
+            schema: public
+            threads: 8
+            connect_timeout: 10
+            priority: interactive
+        target: dev
+description: |
+  Note that you need to adjust the models/staging/schema.yml file to match the schema of your BigQuery dataset. Select and edit that Namespace File from the UI. Save and run this flow.
+  ```yaml
+  sources:
+    - name: staging
+      database: kestra
+      schema: public
+      tables:
+        - name: green_tripdata
+        - name: yellow_tripdata
+  ```
