@@ -13,30 +13,26 @@ The course will cover the basics of workflow orchestration, why it's important, 
 In this section, we'll cover the basics of workflow orchestration. We'll discuss what it is, why it's important, and how it can be used to build data pipelines.
 
 Videos
-- Introduction to Workflow Orchestration
+- 2.2.1 - Introduction to Workflow Orchestration
 
-[![](https://markdown-videos-api.jorgenkh.no/youtube/ZV6CPZDiJFA)](https://youtu.be/ZV6CPZDiJFA?si=nd3mW_VydPByu4D4)
+[![Workflow Orchestration Introduction](https://markdown-videos-api.jorgenkh.no/url?url=https%3A%2F%2Fyoutu.be%2FNp6QmmcgLCs)](https://youtu.be/Np6QmmcgLCs)
+
+
+Resources
+- [What is an Orchestrator?](https://go.kestra.io/de-zoomcamp/what-is-an-orchestrator)
 
 ## Introduction to Kestra
 
 In this section, you'll learn what is Kestra, how to use it, and how to build a Hello-World data pipeline.
 
 Videos
-- Introduction to Kestra
 
-[![](https://markdown-videos-api.jorgenkh.no/youtube/a2BZ7vOihjg)](https://youtu.be/a2BZ7vOihjg?si=XoJY8vt61LPumTed)
-
-- Launch Kestra using Docker Compose
-
-[![](https://markdown-videos-api.jorgenkh.no/youtube/SGL8ywf3OJQ)](https://youtu.be/SGL8ywf3OJQ?si=aY2_NFpYLaOlKEaZ)
-
-- Kestra Fundamentals
-
-[![](https://markdown-videos-api.jorgenkh.no/youtube/HR47SY2RkPQ)](https://youtu.be/HR47SY2RkPQ?si=S7ic1ASWhmi_O0oN)
+- 2.2.2 - Introduction to Kestra
 
 Resources
-- [Quickstart Guide](https://kestra.io/docs/getting-started/quickstart)
-- [Tutorial](https://kestra.io/docs/getting-started/tutorial)
+- [Quickstart Guide](https://go.kestra.io/de-zoomcamp/quickstart)
+- [Install Kestra with Docker Compose](https://go.kestra.io/de-zoomcamp/docker-compose)
+- [Tutorial](https://go.kestra.io/de-zoomcamp/tutorial)
 
 ## ETL: Extract data and load it to Postgres
 
@@ -45,17 +41,54 @@ In this section, we'll cover how you can ingest the Yellow Taxi data from the NY
 > [!NOTE]  
 > The TLC Trip Record Data provided on the [nyc.gov](https://www.nyc.gov/site/tlc/about/tlc-trip-record-data.page) website is currently available only in a Parquet format, but this is NOT the dataset we're going to use in this course. For the purpose of this course, we'll use the **CSV files** available [here on GitHub](https://github.com/DataTalksClub/nyc-tlc-data/releases). This is because the Parquet format can be challenging to understand by newcomers, and we want to make the course as accessible as possible — the CSV format can be easily introspected using tools like Excel or Google Sheets, or even a simple text editor.
 
+Videos
+
+- 2.2.3 - Create a ETL Pipeline with Postgres in Kestra
+
 ## ETL: Extract data and load it to Google Cloud
 
 So far, you've explored how to run ETL locally using Postgres, we'll do the same on GCP. We'll load the same data to:
 1. Data lake using Google Cloud Storage (GCS) 
 2. Data Warehouse using BigQuery.
 
+Videos
+
+- 2.2.4 - Create a ETL Pipeline with GCS and BigQuery in Kestra
+
 ## Scheduling and Backfills
 
 In this section, we'll cover how you can schedule your data pipelines to run at specific times. We'll also cover how you can backfill your data pipelines to run on historical data.
 
 We'll demonstrate backfills first locally using Postgres and then on GCP using GCS and BigQuery.
+
+Videos
+
+- 2.2.5 - Manage Scheduling and Backfills using Postgres in Kestra
+- 2.2.6 - Manage Scheduling and Backfills using BiqQuery in Kestra
+
+## Transform with dbt
+
+In this section, we'll cover how you can transform your tables using dbt inside of your Kestra Flow.
+
+Videos
+
+- 2.2.7 - Transform Data with dbt and Postgres in Kestra
+- 2.2.8 - Transform Data with dbt and BigQuery in Kestra
+
+## Deploy to the Cloud (Bonus)
+
+In this section, we'll cover how you can install Kestra on Google Cloud in Production, and automatically sync and deploy your workflows.
+
+Videos
+
+- 2.2.9 - Deploy Workflows to the Cloud with Git
+
+Resources
+
+- [Install Kestra on Google Cloud](https://go.kestra.io/de-zoomcamp/gcp-install)
+- [Moving from Development to Production](https://go.kestra.io/de-zoomcamp/dev-to-prod)
+- [Using Git in Kestra](https://go.kestra.io/de-zoomcamp/git)
+- [Deploy Flows with GitHub Actions](https://go.kestra.io/de-zoomcamp/deploy-github-actions)
 
 ## Homework 
 
