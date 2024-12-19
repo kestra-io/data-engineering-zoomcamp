@@ -111,7 +111,7 @@ tasks:
           UPDATE {{render(vars.staging_table)}}
           SET 
             unique_row_id = md5(
-              VendorID || 
+              COALESCE(CAST(VendorID AS text), '') ||
               COALESCE(CAST(tpep_pickup_datetime AS text), '') || 
               COALESCE(CAST(tpep_dropoff_datetime AS text), '') || 
               COALESCE(PULocationID, '') || 
@@ -220,7 +220,7 @@ tasks:
           UPDATE {{render(vars.staging_table)}}
           SET 
             unique_row_id = md5(
-              VendorID || 
+              COALESCE(CAST(VendorID AS text), '') ||
               COALESCE(CAST(lpep_pickup_datetime AS text), '') || 
               COALESCE(CAST(lpep_dropoff_datetime AS text), '') || 
               COALESCE(PULocationID, '') || 
@@ -252,7 +252,7 @@ tasks:
   
   - id: purge_files
     type: io.kestra.plugin.core.storage.PurgeCurrentExecutionFiles
-    description: This will remove output files. If you'd like to explore Kestra outputs, disable it.
+    description: To avoid cluttering your storage, we will remove the downloaded files
 
 pluginDefaults:
   - type: io.kestra.plugin.jdbc.postgresql
