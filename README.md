@@ -21,13 +21,15 @@ Videos
 Resources
 - [What is an Orchestrator?](https://go.kestra.io/de-zoomcamp/what-is-an-orchestrator)
 
-## Introduction to Kestra
+## Learn the Concepts of Kestra
 
 In this section, you'll learn what is Kestra, how to use it, and how to build a Hello-World data pipeline.
 
 Videos
 
-- 2.2.2 - Introduction to Kestra
+- 2.2.2 - Learn the Concepts of Kestra
+
+[![Learn Kestra](https://markdown-videos-api.jorgenkh.no/url?url=https%3A%2F%2Fyoutu.be%2Fo79n-EVpics)](https://youtu.be/o79n-EVpics)
 
 Resources
 - [Quickstart Guide](https://go.kestra.io/de-zoomcamp/quickstart)
