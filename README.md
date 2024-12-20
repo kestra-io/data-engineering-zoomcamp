@@ -85,6 +85,8 @@ Videos
 
 - 2.2.9 - Deploy Workflows to the Cloud with Git
 
+[![Deploy Workflows to the Cloud with Git](https://markdown-videos-api.jorgenkh.no/url?url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3Do79n-EVpics)](https://www.youtube.com/watch?v=o79n-EVpics)
+
 Resources
 
 - [Install Kestra on Google Cloud](https://go.kestra.io/de-zoomcamp/gcp-install)
