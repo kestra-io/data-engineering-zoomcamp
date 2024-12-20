@@ -47,6 +47,8 @@ Videos
 
 - 2.2.3 - Create a ETL Pipeline with Postgres in Kestra
 
+[![Create a ETL Pipeline with Postgres in Kestra](https://markdown-videos-api.jorgenkh.no/url?url=https%3A%2F%2Fyoutu.be%2FOkfLX28Ecjg%3Fsi%3DvKbIyWo1TtjpNnvt)](https://youtu.be/OkfLX28Ecjg?si=vKbIyWo1TtjpNnvt)
+
 ## ETL: Extract data and load it to Google Cloud
 
 So far, you've explored how to run ETL locally using Postgres, we'll do the same on GCP. We'll load the same data to:
@@ -66,6 +68,9 @@ We'll demonstrate backfills first locally using Postgres and then on GCP using G
 Videos
 
 - 2.2.5 - Manage Scheduling and Backfills using Postgres in Kestra
+
+[![Manage Scheduling and Backfills using Postgres in Kestra](https://markdown-videos-api.jorgenkh.no/url?url=https%3A%2F%2Fyoutu.be%2F_-li_z97zog%3Fsi%3DG6jZbkfJb3GAyqrd)](https://youtu.be/_-li_z97zog?si=G6jZbkfJb3GAyqrd)
+
 - 2.2.6 - Manage Scheduling and Backfills using BiqQuery in Kestra
 
 ## Transform with dbt
@@ -75,6 +80,9 @@ In this section, we'll cover how you can transform your tables using dbt inside 
 Videos
 
 - 2.2.7 - Transform Data with dbt and Postgres in Kestra
+
+[![Transform Data with dbt and Postgres in Kestra](https://markdown-videos-api.jorgenkh.no/url?url=https%3A%2F%2Fyoutu.be%2FZLp2N6p2JjE%3Fsi%3DtWhcvq5w4lO8v1_p)](https://youtu.be/ZLp2N6p2JjE?si=tWhcvq5w4lO8v1_p)
+
 - 2.2.8 - Transform Data with dbt and BigQuery in Kestra
 
 ## Deploy to the Cloud (Bonus)
